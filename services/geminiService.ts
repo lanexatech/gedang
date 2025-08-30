@@ -1,14 +1,6 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { GenerationResult } from '../types';
 
-const API_KEY = process.env.API_KEY;
-
-if (!API_KEY) {
-  throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
-
 function fileToGenerativePart(base64: string, mimeType: string) {
   return {
     inlineData: {
@@ -28,6 +20,14 @@ export async function editImageWithGemini(
   prompt: string
 ): Promise<GenerationResult> {
   try {
+    const API_KEY = process.env.API_KEY;
+
+    if (!API_KEY) {
+      throw new Error("API_KEY environment variable not set");
+    }
+
+    const ai = new GoogleGenAI({ apiKey: API_KEY });
+    
     const imageParts = images.map(img => fileToGenerativePart(img.base64ImageData, img.mimeType));
     const textPart = { text: prompt };
 
