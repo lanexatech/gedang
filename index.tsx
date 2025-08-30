@@ -1,20 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import Login from './components/Login';
 import TitleScreen from './components/TitleScreen';
 
 const Root = () => {
-  const [view, setView] = useState('title'); // 'title', 'login', 'app'
+  const [view, setView] = useState('title'); // 'title', 'app'
   const [isExitingTitle, setIsExitingTitle] = useState(false);
 
   useEffect(() => {
-    // Timer untuk menampilkan layar judul selama total 5 detik
+    // Timer untuk menampilkan layar judul
     const titleTimer = setTimeout(() => {
       setIsExitingTitle(true); // Mulai animasi fade-out
       const fadeOutTimer = setTimeout(() => {
-        setView('login');
+        setView('app'); // Langsung ke aplikasi
       }, 1000); // Durasi animasi fade-out
 
       return () => clearTimeout(fadeOutTimer);
@@ -23,16 +21,8 @@ const Root = () => {
     return () => clearTimeout(titleTimer);
   }, []);
 
-  const handleLoginSuccess = () => {
-    setView('app');
-  };
-
   if (view === 'title') {
     return <TitleScreen isExiting={isExitingTitle} />;
-  }
-  
-  if (view === 'login') {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
   return <App />;
